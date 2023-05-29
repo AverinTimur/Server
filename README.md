@@ -22,6 +22,10 @@ After that you can use run this program in same folder:
 ```
 ./server
 ```
+If you want to change port and address of server you can use `--port` and `--address`. For example:
+```
+./server --port 1000 --address 127.1.1.1
+```
 
 ## CMake
 

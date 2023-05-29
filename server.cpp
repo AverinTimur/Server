@@ -1,18 +1,20 @@
-#include <sys/socket.h> // For sockets and inet
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include "headers.h"
 
-#include <iostream> // For files
-#include <fstream>
+#define DEFAULT_PORT 8080
+#define DEFAULT_ADDRESS "127.0.0.1"
 
-#include <string> // Other
+int descriptor = socket(AF_INET, SOCK_STREAM, 0);
 
+void end(int signum)
+{
+    std::cout << "Server stoped" << std::endl;
+    shutdown(descriptor, SHUT_RDWR);
+    exit(EXIT_SUCCESS);
+}
 
-int main()
+int main(int argc, char *argv[])
 {
     // socket creating
-    int descriptor = socket(AF_INET, SOCK_STREAM, 0);
     char buffer[1000];
 
     // reading from file
@@ -28,11 +30,43 @@ int main()
     // address creating it's binding and listening start
     struct sockaddr_in address;
     int address_len = sizeof(address);
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");
     address.sin_family = AF_INET;
-    address.sin_port = htons(8080);
+
+    // parse address and port data from command line
+    bool is_port_set = false;
+    bool is_address_set = false;
+    int port;
+    char *host;
+    for(int i = 1; i < argc-1; i++)
+    {
+        if(argv[i] == std::string("--port"))
+        {
+            port = std::atoi(argv[i+1]);
+            is_port_set = true;
+        }
+        else if(argv[i] == std::string("--address"))
+        {
+            host = argv[i+1];
+            is_address_set = true;
+        }
+    }
+    if(!is_port_set)
+    {
+        port = DEFAULT_PORT;
+    }
+    if(!is_address_set)
+    {
+        host = DEFAULT_ADDRESS;
+    }
+    address.sin_port = htons(port);
+    address.sin_addr.s_addr = inet_addr(host);
+
+
     bind(descriptor, (struct sockaddr*)&address, address_len);
     listen(descriptor, 3);
+    std::cout << "Server start at address " << host << " and port " << port << std::endl;
+    std::cout << "Press CTRL+C to stop server" << std::endl;
+    signal(SIGINT, end);
 
     // give responses
     while(true)
@@ -45,3 +79,4 @@ int main()
     shutdown(descriptor, SHUT_RDWR);
     return 0;
 }
+
