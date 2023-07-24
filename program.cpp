@@ -5,7 +5,7 @@ Server server;
 
 void end(int signum)
 {
-    server.stop();
+    server.Stop();
 }
 
 int main(int argc, char *argv[])
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     }
 
     // Start server
-    server.start(host, port);
+    server.Start(host, port);
     signal(SIGINT, end);
 
     return 0;

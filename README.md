@@ -3,17 +3,6 @@ It's server is practice of linux C++ programming in interesting project.
 
 It's most important ideas is ease of understanding, modularity and self-writing.
 
-# Structure
-## Files
-This folder contains some static files. For example it's html, http templates, images and others. 
-* RESPONSE.txt is server's http response
-
-## server.cpp
-This file is server's class
-
-## program.cpp
-This file is project's core that start function
-
 # Start
 ## C++
 Compile server.cpp. For example if you use g++ use in folder of server.cpp:
@@ -44,3 +33,19 @@ add_custom_target(files
 )
 add_dependencies(server files)
 ```
+
+# Server API
+* Start(char* address, int port). Start server at "http://address::port"
+* Stop(). Stop server
+* Files/Response.txt. Response from server
+
+# Structure
+## Files
+This folder contains some static files. For example it's html, http templates, images and others. 
+* RESPONSE.txt is server's http response
+
+## server.cpp
+This file is server's class
+
+## program.cpp
+This file is project's core that start function

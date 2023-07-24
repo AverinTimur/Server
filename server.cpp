@@ -5,13 +5,13 @@ class Server
     int descriptor = socket(AF_INET, SOCK_STREAM, 0);
 
     public:
-        void stop()
+        void Stop()
         {
             std::cout << "Server stoped" << std::endl;
             shutdown(descriptor, SHUT_RDWR);
             descriptor = -1;
         }
-        void start(char* host, int port)
+        void Start(char* address, int port)
         {
             // socket creating
             std::string buffer;
@@ -27,21 +27,21 @@ class Server
             file.close();
     
             // address creating it's binding and listening start
-            sockaddr_in address;
-            int address_len = sizeof(address);
-            address.sin_family = AF_INET;
-            address.sin_port = htons(port);
-            address.sin_addr.s_addr = inet_addr(host);
+            sockaddr_in socket_address;
+            int socket_address_len = sizeof(socket_address);
+            socket_address.sin_family = AF_INET;
+            socket_address.sin_port = htons(port);
+            socket_address.sin_addr.s_addr = inet_addr(address);
     
-            bind(descriptor, (struct sockaddr*)&address, address_len);
+            bind(descriptor, (struct sockaddr*)&socket_address, socket_address_len);
             listen(descriptor, 3);
-            std::cout << "Server start at address " << host << " and port " << port << std::endl;
+            std::cout << "Server start at address " << address << " and port " << port << std::endl;
             std::cout << "Press CTRL+C to stop server" << std::endl;
     
             // give responses
             while(descriptor >= 0)
             {
-                int new_socket = accept(descriptor, (struct sockaddr*)&address, (socklen_t*)&address_len);
+                int new_socket = accept(descriptor, (struct sockaddr*)&socket_address, (socklen_t*)&socket_address_len);
                 read(new_socket, buffer.data(), buffer.size());
                 send(new_socket, &request[0], request.size(), 0);
             }
