@@ -35,7 +35,7 @@ add_dependencies(server files)
 ```
 
 # Server API
-* Start(char* address, int port). Start server at "http://address::port"
+* Start(char* address, int port, std::string (*request_handler)(std::string)). Start server at "http://address::port". request_handler is function that handle request and return response
 * Stop(). Stop server
 * Files/Response.txt. Response from server
 

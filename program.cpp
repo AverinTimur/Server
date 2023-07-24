@@ -13,10 +13,10 @@ std::string request_handle(std::string request)
     file.seekg(0, file.end);
     int size = file.tellg();
     file.seekg(0);
-
     std::string response(size, ' ');
     file.read(&response[0], size);
     file.close();
+
     return response;
 }
 
