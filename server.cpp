@@ -22,7 +22,7 @@ class Server
     
             bind(descriptor, (struct sockaddr*)&socket_address, socket_address_len);
             listen(descriptor, 3);
-            std::cout << "Server start at address " << address << " and port " << port << std::endl;
+            std::cout << "Server start at address 'http://'" << address << ":" << port << std::endl;
             std::cout << "Press CTRL+C to stop server" << std::endl;
     
             // give responses
