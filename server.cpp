@@ -28,12 +28,14 @@ class Server
             // give responses
             std::string response;
             std::string buffer;
+            int new_socket;
             while(descriptor >= 0)
             {
-                int new_socket = accept(descriptor, (struct sockaddr*)&socket_address, (socklen_t*)&socket_address_len);
+                new_socket = accept(descriptor, (struct sockaddr*)&socket_address, (socklen_t*)&socket_address_len);
                 read(new_socket, buffer.data(), buffer.size());
                 response = request_handler(buffer);
                 send(new_socket, &response[0], response.size(), 0);
+                close(new_socket);
             }
         }
 };
