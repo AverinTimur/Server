@@ -15,5 +15,5 @@
 #include <string> 
 
 
-#define DEFAULT_PORT 80
+#define DEFAULT_PORT 8000
 #define DEFAULT_ADDRESS "127.0.0.1"

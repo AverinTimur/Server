@@ -7,6 +7,18 @@ void end(int signum)
 {
     server.Stop();
 }
+std::string request_handle(std::string request)
+{
+    std::ifstream file("Files/RESPONSE.txt");
+    file.seekg(0, file.end);
+    int size = file.tellg();
+    file.seekg(0);
+
+    std::string response(size, ' ');
+    file.read(&response[0], size);
+    file.close();
+    return response;
+}
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +50,7 @@ int main(int argc, char *argv[])
     }
 
     // Start server
-    server.Start(host, port);
+    server.Start(host, port, request_handle);
     signal(SIGINT, end);
 
     return 0;

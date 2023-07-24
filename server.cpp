@@ -11,21 +11,8 @@ class Server
             shutdown(descriptor, SHUT_RDWR);
             descriptor = -1;
         }
-        void Start(char* address, int port)
+        void Start(char* address, int port, std::string (*request_handler)(std::string))
         {
-            // socket creating
-            std::string buffer;
-    
-            // reading from file
-            std::ifstream file("Files/RESPONSE.txt");
-            file.seekg(0, file.end);
-            int size = file.tellg();
-            file.seekg(0);
-    
-            std::string request(size, ' ');
-            file.read(&request[0], size);
-            file.close();
-    
             // address creating it's binding and listening start
             sockaddr_in socket_address;
             int socket_address_len = sizeof(socket_address);
@@ -39,11 +26,14 @@ class Server
             std::cout << "Press CTRL+C to stop server" << std::endl;
     
             // give responses
+            std::string response;
+            std::string buffer;
             while(descriptor >= 0)
             {
                 int new_socket = accept(descriptor, (struct sockaddr*)&socket_address, (socklen_t*)&socket_address_len);
                 read(new_socket, buffer.data(), buffer.size());
-                send(new_socket, &request[0], request.size(), 0);
+                response = request_handler(buffer);
+                send(new_socket, &response[0], response.size(), 0);
             }
         }
 };
